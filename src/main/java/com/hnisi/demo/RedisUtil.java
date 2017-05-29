@@ -10,16 +10,25 @@ import redis.clients.jedis.JedisPoolConfig;
  * @author lilu
  * 
  */
-public class RedisUtil {
+public final class RedisUtil {
 
 	private static JedisPool jedisPool = null;
+
+	private static int MAX_ACTIVE = 1024;
+	private static int MAX_IDLE = 200;
+	private static int MAX_WAIT = 10000;
+	private static int TIMEOUT = 10000;
+
+	private static String HOST = "192.168.22.202";
+	private static int PORT = 6379;
 
 	static {
 		try {
 			JedisPoolConfig config = new JedisPoolConfig();
-			// config.setMaxTotal(500);
-			//
-			jedisPool = new JedisPool(config, "192.168.22.202", 6379);
+			config.setMaxIdle(MAX_IDLE);
+			config.setMaxWait(MAX_WAIT);
+			config.setMaxActive(MAX_ACTIVE);
+			jedisPool = new JedisPool(config, HOST, PORT);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -39,7 +48,7 @@ public class RedisUtil {
 		}
 	}
 
-	public void returnJedis(Jedis jedis) {
+	public static void returnJedis(Jedis jedis) {
 		if (null != jedis && null != jedisPool) {
 			jedisPool.returnResource(jedis);
 		}
