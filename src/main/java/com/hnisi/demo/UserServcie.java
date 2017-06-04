@@ -3,7 +3,11 @@ package com.hnisi.demo;
 import java.util.BitSet;
 
 import redis.clients.jedis.Jedis;
-
+/**
+ * 
+ * @author lilu
+ *
+ */
 public class UserServcie {
 
 	public boolean login(String username, String password) {
